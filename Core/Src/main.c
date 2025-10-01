@@ -44,10 +44,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-uint32_t ticks;
-uint32_t lastchange = 0;
-int signal=1;
-int press = 0;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -92,46 +89,21 @@ int main(void)
   MX_GPIO_Init();
   MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
-
+  HAL_TIM_Base_Start(&htim1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  HAL_GPIO_WritePin(LEDG_GPIO_Port, LEDG_Pin, GPIO_PIN_SET);
-  HAL_GPIO_WritePin(LEDR_GPIO_Port, LEDR_Pin, GPIO_PIN_SET);
-  while (1) {
-    if (signal == 1) HAL_GPIO_WritePin(LEDG_GPIO_Port, LEDR_Pin, GPIO_PIN_SET);
-    if (signal == 0) HAL_GPIO_WritePin(LEDR_GPIO_Port, LEDR_Pin, GPIO_PIN_SET);
-    ticks = HAL_GetTick();
-    if (HAL_GPIO_ReadPin(KEY_GPIO_Port, KEY_Pin) == GPIO_PIN_SET ) {
-      HAL_Delay(10);
-      if (HAL_GPIO_ReadPin(KEY_GPIO_Port, KEY_Pin) == GPIO_PIN_SET && !press) {
-        press = 1;
-        if (signal == 1) {
-          signal = 0;
-          HAL_GPIO_WritePin(LEDR_GPIO_Port, LEDR_Pin, GPIO_PIN_SET);
-          HAL_GPIO_WritePin(LEDG_GPIO_Port, LEDR_Pin, GPIO_PIN_RESET);
-        }
-        else{
-          signal = 1;
-          HAL_GPIO_WritePin(LEDG_GPIO_Port, LEDG_Pin, GPIO_PIN_SET);
-          HAL_GPIO_WritePin(LEDR_GPIO_Port, LEDG_Pin, GPIO_PIN_RESET);
-        }
-        lastchange = HAL_GetTick();
-      }
-    }
-    else press = 0;
-    if (ticks-lastchange>=500) {
-      if (signal == 1)
-        HAL_GPIO_TogglePin(LEDR_GPIO_Port, LEDR_Pin);
-      else
-        HAL_GPIO_TogglePin(LEDG_GPIO_Port,LEDG_Pin);
-      lastchange=HAL_GetTick();
-    }
-    HAL_Delay(20);
+  while (1)
+  {
+    if (__HAL_TIM_GET_COUNTER(&htim1)>5000)
+      HAL_GPIO_WritePin(LEDR_GPIO_Port, LEDR_Pin,GPIO_PIN_SET);
+    else
+      HAL_GPIO_WritePin(LEDR_GPIO_Port, LEDR_Pin,GPIO_PIN_RESET);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+  }
   /* USER CODE END 3 */
 }
 
