@@ -100,7 +100,7 @@ int main(void)
   while (1)
   {
     uint32_t arr_value = __HAL_TIM_GET_AUTORELOAD(&htim1)+1;
-    uint32_t brightness = arr_value * sinf(4 * HAL_GetTick()/1000.f) - 1;
+    uint32_t brightness = arr_value * sinf( 2 * HAL_GetTick()/1000.f) - 1;
     __HAL_TIM_SetCompare(&htim1,TIM_CHANNEL_2,brightness);
     /* USER CODE END WHILE */
 
