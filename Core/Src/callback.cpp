@@ -5,12 +5,11 @@
 extern uint8_t rx_msg[4];
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
     if (huart == &huart7) {
-        if (rx_msg[0] == 'R') {
-            HAL_GPIO_WritePin(LEDR_GPIO_Port, LEDR_Pin, GPIO_PIN_RESET);
+        uint8_t tx_msg[4];
+        for (int i = 0; i < 4; i++) {
+            tx_msg[i] = rx_msg[i];
         }
-        else if (rx_msg[0] == 'M') {
-            HAL_GPIO_WritePin(LEDR_GPIO_Port, LEDR_Pin, GPIO_PIN_SET);
-        }
-        HAL_UART_Receive_IT(&huart7, rx_msg, 1);
+        HAL_UART_Transmit_IT(&huart7,tx_msg,4);
+        HAL_UART_Receive_IT(&huart7, rx_msg, 4);
     }
 }
