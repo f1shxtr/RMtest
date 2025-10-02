@@ -1,13 +1,16 @@
 #include "main.h"
 #include "gpio.h"
-#include "tim.h"
+#include "usart.h"
 
-uint32_t count = 0;
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
-    if (htim == &htim2) {
-    count++;
-    uint32_t arr_value =__HAL_TIM_GetAutoreload(&htim1) +1;
-    uint32_t brightness = (__HAL_TIM_GetCompare(&htim1,TIM_CHANNEL_2)+1) % arr_value;
-    __HAL_TIM_SetCompare(&htim1,TIM_CHANNEL_2,brightness);
+extern uint8_t rx_msg[4];
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
+    if (huart == &huart7) {
+        if (rx_msg[0] == 'R') {
+            HAL_GPIO_WritePin(LEDR_GPIO_Port, LEDR_Pin, GPIO_PIN_RESET);
+        }
+        else if (rx_msg[0] == 'M') {
+            HAL_GPIO_WritePin(LEDR_GPIO_Port, LEDR_Pin, GPIO_PIN_SET);
+        }
+        HAL_UART_Receive_IT(&huart7, rx_msg, 1);
     }
 }
