@@ -1,15 +1,26 @@
 #include "main.h"
 #include "gpio.h"
-#include "usart.h"
+#include "can.h"
+#include "tim.h"
+#include "m3508.cpp"
 
-extern uint8_t rx_msg[4];
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
-    if (huart == &huart7) {
-        uint8_t tx_msg[4];
-        for (int i = 0; i < 4; i++) {
-            tx_msg[i] = rx_msg[i];
-        }
-        HAL_UART_Transmit_IT(&huart7,tx_msg,4);
-        HAL_UART_Receive_IT(&huart7, rx_msg, 4);
+extern CAN_RxHeaderTypeDef rx_header;
+extern CAN_TxHeaderTypeDef tx_header;
+extern uint8_t tx_data[8];
+extern uint8_t rx_data[8];
+uint32_t *pTxMailbox ;
+//M3508_Motor Motor(3591/187);
+// void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) {
+//     if (hcan->Instance == CAN1) {
+//         HAL_CAN_GetRxMessage(&hcan1,CAN_RX_FIFO0,&rx_header,rx_data);
+//     }
+//     if (rx_header.StdId == 0x201) {
+//         Motor.canRxMsgCallback(rx_data);
+//     }
+// }
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
+    if (htim->Instance == htim6.Instance) {
+        tx_data[7]=0xC0;
+        HAL_CAN_AddTxMessage(&hcan1,&tx_header,tx_data,pTxMailbox);
     }
 }

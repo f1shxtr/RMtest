@@ -235,7 +235,7 @@ typedef struct
   __IO uint32_t RDTR; /*!< CAN receive FIFO mailbox data length control and time stamp register */
   __IO uint32_t RDLR; /*!< CAN receive FIFO mailbox data low register */
   __IO uint32_t RDHR; /*!< CAN receive FIFO mailbox data high register */
-} CAN_FIFOMailBox_TypeDef;
+}CAN_FIFOMailBox_TypeDef;
 
 /**
   * @brief Controller Area Network FilterRegister
