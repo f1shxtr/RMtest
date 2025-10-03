@@ -35,6 +35,7 @@ enable_language(C ASM)
 add_executable(${CMAKE_PROJECT_NAME}
         Core/Src/callback.cpp
         Core/Src/m3508.cpp
+        Core/Inc/m3508.h
 )
 
 # Add STM32CubeMX generated sources
