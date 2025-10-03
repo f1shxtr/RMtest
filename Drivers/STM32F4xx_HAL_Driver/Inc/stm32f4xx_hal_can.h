@@ -724,7 +724,7 @@ void HAL_CAN_TxMailbox2CompleteCallback(CAN_HandleTypeDef *hcan);
 void HAL_CAN_TxMailbox0AbortCallback(CAN_HandleTypeDef *hcan);
 void HAL_CAN_TxMailbox1AbortCallback(CAN_HandleTypeDef *hcan);
 void HAL_CAN_TxMailbox2AbortCallback(CAN_HandleTypeDef *hcan);
-void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan);
+void HAL_CAN_RxFifo0MsgPendingCallback(const CAN_HandleTypeDef *hcan);
 void HAL_CAN_RxFifo0FullCallback(CAN_HandleTypeDef *hcan);
 void HAL_CAN_RxFifo1MsgPendingCallback(CAN_HandleTypeDef *hcan);
 void HAL_CAN_RxFifo1FullCallback(CAN_HandleTypeDef *hcan);

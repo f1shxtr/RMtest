@@ -5,7 +5,7 @@
 #ifndef LIGHT_M3508_H
 #define LIGHT_M3508_H
 #include "main.h"
-class M3508_Motor {
+class M3508Motor {
 private:
     const float ratio_;
 
@@ -19,7 +19,7 @@ private:
     float temp_ = 0.f;
 
 public:
-    explicit M3508_Motor(const float ratio) : ratio_(ratio) { };
-    void canRxMsgCallback(const uint8_t rx_data[8]);
+    explicit M3508Motor(const float ratio): ratio_(ratio) {};
+    void can_rx_msg_callback(const uint8_t rx_data[8]);
 };
 #endif
