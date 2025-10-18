@@ -1,0 +1,25 @@
+//
+// Created by 嘉佳 on 2025/10/3.
+//
+
+#ifndef LIGHT_M3508_H
+#define LIGHT_M3508_H
+#include "main.h"
+class M3508Motor {
+private:
+    const float ratio_;
+
+    float angle_ = 0.f;
+    float delta_angle_ = 0.f;
+    float ecd_angle_ = 0.f;
+    float last_ecd_angle_ = 0.f;
+    float delta_ecd_angle_ = 0.f;
+    float rotate_speed_ = 0.f;
+    float current_ = 0.f;
+    float temp_ = 0.f;
+
+public:
+    explicit M3508Motor(const float ratio): ratio_(ratio) {};
+    void can_rx_msg_callback(const uint8_t rx_data[8]);
+};
+#endif
