@@ -23,3 +23,43 @@ void M3508Motor::can_rx_msg_callback(const uint8_t rx_data[8]) {
     current_ = linear_mapping(current, -16384, 16384, -20, 20);
     temp_ = rx_data[6];
 }
+
+void M3508Motor::SetPosition(float target_position, float feedforward_speed, float feedforward_intensity) {
+    target_angle_ = target_position;
+    feedforward_speed_ = feedforward_speed;
+    feedforward_intensity_ = feedforward_intensity;
+    control_method_ = POSITION_SPEED;
+}
+
+void M3508Motor::SetSpeed(float target_speed, float feedforward_intensity) {
+    target_speed_ = target_speed;
+    feedforward_intensity_ = feedforward_intensity;
+    control_method_ = SPEED;
+}
+
+void M3508Motor::SetIntensity(float intensity) {
+    output_intensity_ = intensity;
+    control_method_ = TORQUE;
+}
+
+void M3508Motor::handle() {
+    // 更新反馈值
+    fdb_angle_ = angle_;
+    fdb_speed_ = rotate_speed_;
+
+    switch (control_method_) {
+        case TORQUE:
+
+            break;
+
+        case SPEED:
+            // 速度环 PID 计算
+            output_intensity_ = spid_.calc(target_speed_ + feedforward_speed_, fdb_speed_) + feedforward_intensity_;
+            break;
+
+        case POSITION_SPEED:
+            target_speed_ = ppid_.calc(target_angle_, fdb_angle_) + feedforward_speed_;
+            output_intensity_ = spid_.calc(target_speed_, fdb_speed_) + feedforward_intensity_;
+            break;
+    }
+}
