@@ -53,10 +53,14 @@ extern "C" {
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
-
+void poweroff();
+void handle();
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define BUTTON_Pin_Pin GPIO_PIN_2
+#define BUTTON_Pin_GPIO_Port GPIOB
+#define BUTTON_Pin_EXTI_IRQn EXTI2_IRQn
 
 /* USER CODE BEGIN Private defines */
 

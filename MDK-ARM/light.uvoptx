@@ -152,37 +152,53 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>2298</LineNumber>
+          <LineNumber>221</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>24</Address>
+          <Address>0</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c</Filename>
+          <Filename>../Core/Src/system_stm32f4xx.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\light\../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c\2298</Expression>
+          <Expression>\\light\../Core/Src/system_stm32f4xx.c\221</Expression>
         </Bp>
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
           <LineNumber>502</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>74</Address>
+          <Address>0</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
+          <BreakIfRCount>0</BreakIfRCount>
           <Filename>../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\light\../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c\502</Expression>
+          <Expression></Expression>
         </Bp>
         <Bp>
           <Number>2</Number>
+          <Type>0</Type>
+          <LineNumber>2298</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>0</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>0</BreakIfRCount>
+          <Filename>../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression></Expression>
+        </Bp>
+        <Bp>
+          <Number>3</Number>
           <Type>0</Type>
           <LineNumber>151</LineNumber>
           <EnabledFlag>1</EnabledFlag>
@@ -233,6 +249,21 @@
           <count>6</count>
           <WinNumber>1</WinNumber>
           <ItemText>rx_data</ItemText>
+        </Ww>
+        <Ww>
+          <count>7</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>tx_data[8]</ItemText>
+        </Ww>
+        <Ww>
+          <count>8</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>tx_data</ItemText>
+        </Ww>
+        <Ww>
+          <count>9</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>\\light\../Core/Src/main.c\tx_data[1]</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>

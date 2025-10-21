@@ -1,6 +1,10 @@
 #include "m3508.h"
+#include "can.h"
 #include "main.h"
-
+#include <cmath>
+extern CAN_TxHeaderTypeDef tx_header;
+extern uint8_t tx_data[8];
+extern uint32_t* pTxMailbox;
 float linear_mapping(const int in, const int in_min, const int in_max, const float out_min, const float out_max) {
     return out_min + (in - in_min) * ((out_max - out_min) / (in_max - in_min));
 };
@@ -43,6 +47,12 @@ void M3508Motor::SetIntensity(float intensity) {
 }
 
 void M3508Motor::handle() {
+    feedforward_intensity_ = FeedforwardIntensityCalc(angle_);
+    const float I_to_intensity = 16384.0f / 20.0f; // ≈819.2 intensity per A
+    int16_t intensity = feedforward_intensity_ * I_to_intensity;
+    tx_data[0] = (intensity >> 8) & 0xFF; // 高字节
+    tx_data[1] = intensity & 0xFF; // 低字节
+    HAL_CAN_AddTxMessage(&hcan1, &tx_header, tx_data, pTxMailbox);
     // 更新反馈值
     fdb_angle_ = angle_;
     fdb_speed_ = rotate_speed_;
@@ -62,4 +72,17 @@ void M3508Motor::handle() {
             output_intensity_ = spid_.calc(target_speed_, fdb_speed_) + feedforward_intensity_;
             break;
     }
+}
+
+float M3508Motor::FeedforwardIntensityCalc(float current_angle) {
+    const float m = 0.5f; // kg
+    const float g = 9.81f; // m/s^2
+    const float L = 0.05524f; // m
+    const float Kt = 0.3f; // N·m/A
+
+    float torque = m * g * L * sinf(current_angle * 3.1415926f / 180.0f);
+
+    float intensity = torque / Kt;
+
+    return intensity;
 }

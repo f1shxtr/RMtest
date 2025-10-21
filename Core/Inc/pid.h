@@ -1,9 +1,9 @@
 //
 // Created by 嘉佳 on 2025/10/18.
 //
-
+#include "main.h"
 #ifndef LIGHT_PID_H
-#define LIGHT_PID_H
+    #define LIGHT_PID_H
 class PID {
 public:
     PID(void): PID(0, 0, 0, 0, 0) {}

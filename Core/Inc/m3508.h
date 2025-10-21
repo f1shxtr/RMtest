@@ -48,5 +48,6 @@ public:
     void SetSpeed(float target_speed, float feedforward_intensity);
     void SetIntensity(float intensity);
     void handle();
+    float FeedforwardIntensityCalc(float current_angle);
 };
 #endif
