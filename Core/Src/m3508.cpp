@@ -76,11 +76,11 @@ void M3508Motor::handle() {
 
 float M3508Motor::FeedforwardIntensityCalc(float current_angle) {
     const float m = 0.5f; // kg
-    const float g = 9.81f; // m/s^2
+    const float g = 9.8f; // m/s^2
     const float L = 0.05524f; // m
     const float Kt = 0.3f; // N·m/A
 
-    float torque = m * g * L * sinf(current_angle * 3.1415926f / 180.0f);
+    float torque = m * g * L * sinf(current_angle * 3.141592653f / 180.0f);
 
     float intensity = torque / Kt;
 

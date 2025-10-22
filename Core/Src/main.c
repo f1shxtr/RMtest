@@ -118,7 +118,7 @@ int main(void) {
     while (1) {
         if (stop_flag) {
             poweroff();
-            HAL_Delay(10);
+            HAL_Delay(5);
         }
         handle();
         /* USER CODE END WHILE */
