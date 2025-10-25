@@ -11,7 +11,8 @@ PID::PID(float kp, float ki, float kd, float i_max, float out_max, float d_filte
 
 // 重置PID状态
 void PID::reset(void) {
-    err_sum_ = 0.0f;
+    ref_ = fdb_ = 0.0f;
+    err_sum_ = err_ = last_err_ = 0.0f;
     pout_ = iout_ = dout_ = last_dout_ = 0.0f;
     output_ = 0.0f;
 }

@@ -9,6 +9,9 @@ extern CAN_TxHeaderTypeDef tx_header;
 extern uint8_t tx_data[8];
 extern uint8_t rx_data[8];
 extern uint8_t stop_flag;
+extern float target_angle;
+extern float target_speed;
+extern uint8_t stop_flag;
 uint32_t* pTxMailbox;
 M3508Motor Motor(3591 / 187);
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef* hcan) {
@@ -21,8 +24,13 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef* hcan) {
 }
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim) {
     if (htim->Instance == htim6.Instance) {
-        tx_data[7] = 0xC0;
-        HAL_CAN_AddTxMessage(&hcan1, &tx_header, tx_data, pTxMailbox);
+        Motor.target_angle_ = target_angle;
+        if (stop_flag) {
+            poweroff();
+        }
+        //Motor.SetIntensity(0);
+        Motor.SetSpeed(target_speed, Motor.FeedforwardIntensityCalc(Motor.angle_));
+        Motor.handle();
     }
 }
 
@@ -33,9 +41,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 }
 void poweroff() {
     Motor.SetIntensity(0);
+    tx_data[0] = 0x00;
     tx_data[1] = 0x00;
     HAL_CAN_AddTxMessage(&hcan1, &tx_header, tx_data, pTxMailbox);
-}
-void handle() {
-    Motor.handle();
 }
