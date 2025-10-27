@@ -10,8 +10,8 @@ float linear_mapping(const int in, const int in_min, const int in_max, const flo
     return out_min + (in - in_min) * ((out_max - out_min) / (in_max - in_min));
 };
 
-PID M3508Motor::spid_(7.0f, 0.0f, 0.1f, 20.0f, 3000.0f, 0.1f);
-PID M3508Motor::ppid_(0.5f, 0.0f, 0.01f, 100.0f, 200.0f, 0.05f);
+PID M3508Motor::spid_(7.0f, 0.0f, 0.0f, 4000.0f, 16384.0f, 0.1f);
+PID M3508Motor::ppid_(0.5f, 0.0f, 0.0f, 4000.0f, 16384.0f, 0.1f);
 void M3508Motor::can_rx_msg_callback(const uint8_t rx_data[8]) {
     last_ecd_angle_ = ecd_angle_;
     const auto ecd_angle = static_cast<uint16_t>((rx_data[0] << 8) | rx_data[1]);
@@ -72,13 +72,8 @@ void M3508Motor::handle() {
             break;
     }
     int16_t intensity = static_cast<int16_t>(output_intensity_);
-    if (intensity > 2000.0f)
-        intensity = 2000.0f;
-    if (intensity < -2000.0f)
-        intensity = -2000.0f;
     tx_data[0] = (intensity >> 8) & 0xFF; // 高字节
     tx_data[1] = intensity & 0xFF; // 低字节
-    HAL_CAN_AddTxMessage(&hcan1, &tx_header, tx_data, pTxMailbox);
 }
 
 float M3508Motor::FeedforwardIntensityCalc(float current_angle) {

@@ -26,7 +26,7 @@
 /* USER CODE BEGIN Includes */
 uint8_t stop_flag = 1;
 float target_angle = 0.0f;
-float target_speed = 100.0f;
+float target_speed = 0.0f;
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -113,7 +113,6 @@ int main(void) {
     HAL_CAN_ConfigFilter(&hcan1, &filter_config);
     HAL_CAN_Start(&hcan1);
     HAL_CAN_ActivateNotification(&hcan1, CAN_IT_RX_FIFO0_MSG_PENDING);
-    uint32_t last_tick = HAL_GetTick();
     /* USER CODE END 2 */
 
     /* Infinite loop */
@@ -123,8 +122,6 @@ int main(void) {
             poweroff();
             HAL_Delay(5);
         }
-
-        uint32_t now = HAL_GetTick();
 
         /* USER CODE END WHILE */
 

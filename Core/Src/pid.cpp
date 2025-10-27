@@ -29,13 +29,13 @@ float PID::calc(float ref, float fdb) {
     else if (err_sum_ < -i_max_)
         err_sum_ = -i_max_;
     iout_ = ki_ * err_sum_;
-    float derivative = err_ - last_err_;
-    dout_ = last_dout_ + d_filter_k_ * (kd_ * derivative - last_dout_);
+    dout_ = (err_ - last_err_) * kd_;
+    dout_ = (1 - d_filter_k_) * last_dout_ + d_filter_k_ * dout_;
     output_ = pout_ + iout_ + dout_;
     if (output_ > out_max_)
         output_ = out_max_;
     else if (output_ < -output_)
-        output_ = -output_;
+        output_ = -out_max_;
     last_err_ = err_;
     last_dout_ = dout_;
     return output_;

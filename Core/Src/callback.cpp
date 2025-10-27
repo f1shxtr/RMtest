@@ -19,18 +19,20 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef* hcan) {
         HAL_CAN_GetRxMessage(&hcan1, CAN_RX_FIFO0, &rx_header, rx_data);
     }
     if (rx_header.StdId == 0x201) {
+        Motor.target_angle_ = target_angle;
         Motor.can_rx_msg_callback(rx_data);
+        float feedforward_intensity = Motor.FeedforwardIntensityCalc(Motor.angle_);
+        //Motor.SetPosition(target_angle,0.0f,feedforward_intensity);
+        Motor.SetSpeed(target_speed, feedforward_intensity);
+        Motor.handle();
     }
 }
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim) {
     if (htim->Instance == htim6.Instance) {
-        Motor.target_angle_ = target_angle;
-        if (stop_flag) {
-            poweroff();
+        if (!stop_flag) {
+            HAL_CAN_AddTxMessage(&hcan1, &tx_header, tx_data, pTxMailbox);
         }
         //Motor.SetIntensity(0);
-        Motor.SetSpeed(target_speed, Motor.FeedforwardIntensityCalc(Motor.angle_));
-        Motor.handle();
     }
 }
 
