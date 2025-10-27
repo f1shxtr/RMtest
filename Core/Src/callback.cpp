@@ -19,11 +19,11 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef* hcan) {
         HAL_CAN_GetRxMessage(&hcan1, CAN_RX_FIFO0, &rx_header, rx_data);
     }
     if (rx_header.StdId == 0x201) {
-        Motor.target_angle_ = target_angle;
         Motor.can_rx_msg_callback(rx_data);
+        //float feedforward_intensity = 0.0f;
         float feedforward_intensity = Motor.FeedforwardIntensityCalc(Motor.angle_);
-        //Motor.SetPosition(target_angle,0.0f,feedforward_intensity);
-        Motor.SetSpeed(target_speed, feedforward_intensity);
+        Motor.SetPosition(target_angle, 0.0f, feedforward_intensity);
+        //Motor.SetSpeed(target_speed, feedforward_intensity);
         Motor.handle();
     }
 }

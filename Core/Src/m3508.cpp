@@ -10,8 +10,8 @@ float linear_mapping(const int in, const int in_min, const int in_max, const flo
     return out_min + (in - in_min) * ((out_max - out_min) / (in_max - in_min));
 };
 
-PID M3508Motor::spid_(7.0f, 0.0f, 0.0f, 4000.0f, 16384.0f, 0.1f);
-PID M3508Motor::ppid_(0.5f, 0.0f, 0.0f, 4000.0f, 16384.0f, 0.1f);
+PID M3508Motor::spid_(21.0f, 0.0f, 2.4f, 4000.0f, 16384.0f, 0.3f);
+PID M3508Motor::ppid_(160.0f, 0.1f, 6.0f, 4000.0f, 16384.0f, 0.4f);
 void M3508Motor::can_rx_msg_callback(const uint8_t rx_data[8]) {
     last_ecd_angle_ = ecd_angle_;
     const auto ecd_angle = static_cast<uint16_t>((rx_data[0] << 8) | rx_data[1]);
@@ -29,6 +29,10 @@ void M3508Motor::can_rx_msg_callback(const uint8_t rx_data[8]) {
     const auto current = static_cast<int16_t>((rx_data[4] << 8) | rx_data[5]);
     current_ = linear_mapping(current, -16384, 16384, -20, 20);
     temp_ = rx_data[6];
+
+    //更新反馈值
+    fdb_angle_ = angle_;
+    fdb_speed_ = rotate_speed_;
 }
 
 void M3508Motor::SetPosition(float target_position, float feedforward_speed, float feedforward_intensity) {
@@ -50,11 +54,7 @@ void M3508Motor::SetIntensity(float intensity) {
 }
 
 void M3508Motor::handle() {
-    feedforward_intensity_ = FeedforwardIntensityCalc(angle_);
-
-    // 更新反馈值
-    fdb_angle_ = angle_;
-    fdb_speed_ = rotate_speed_;
+    //feedforward_intensity_ = FeedforwardIntensityCalc(angle_);
 
     switch (control_method_) {
         case TORQUE:
